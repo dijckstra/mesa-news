@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/newsFragment"
-        android:name="inc.mesa.mesanews.NewsFragment"
+        android:name="inc.mesa.mesanews.news.NewsFragment"
         android:label="fragment_news"
         tools:layout="@layout/fragment_news" />
 </navigation>
