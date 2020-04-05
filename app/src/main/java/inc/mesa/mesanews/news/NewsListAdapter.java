@@ -27,14 +27,16 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
 
     public NewsListAdapter(final Context context,
                            final List<News> newsList,
-                           final NewsContract.Presenter presenter,
+                           final NewsContract.View newsView,
                            final boolean highlight) {
         this.context = context;
         this.newsList = newsList;
         this.onClickListener = view -> {
             int pos = recyclerView.getChildAdapterPosition(view);
             News news = this.newsList.get(pos);
-            presenter.openNewsURL(news.getUrl());
+            int newsId = news.getId();
+
+            newsView.showArticle(view, newsId);
         };
         this.highlight = highlight;
     }

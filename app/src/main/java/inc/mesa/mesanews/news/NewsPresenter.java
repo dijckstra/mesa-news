@@ -29,11 +29,6 @@ public class NewsPresenter implements NewsContract.Presenter {
         this.newsRepository.getNews(highlights, news -> processNews(highlights, news));
     }
 
-    @Override
-    public void openNewsURL(final String url) {
-        view.showArticle(url);
-    }
-
     /* Private methods */
     private void processNews(final boolean highlights, final List<News> news) {
         if (highlights) {

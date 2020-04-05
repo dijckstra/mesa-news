@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import inc.mesa.mesanews.R;
@@ -41,14 +42,14 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         latestNewsRecyclerView = root.findViewById(R.id.rv_latest_news);
 
 
-        highlightsListAdapter = new NewsListAdapter(getContext(), new ArrayList<>(), presenter, true);
+        highlightsListAdapter = new NewsListAdapter(getContext(), new ArrayList<>(), this, true);
         highlightsRecyclerView.setAdapter(highlightsListAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
                                                                     LinearLayoutManager.HORIZONTAL,
                                                                     false);
         highlightsRecyclerView.setLayoutManager(layoutManager);
 
-        latestNewsAdapter = new NewsListAdapter(getContext(), new ArrayList<>(), presenter, false);
+        latestNewsAdapter = new NewsListAdapter(getContext(), new ArrayList<>(), this, false);
         latestNewsRecyclerView.setAdapter(latestNewsAdapter);
         latestNewsRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
@@ -75,7 +76,8 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     }
 
     @Override
-    public void showArticle(final String url) {
-
+    public void showArticle(final View view, final int newsId) {
+        NewsFragmentDirections.OpenArticle action = NewsFragmentDirections.openArticle(newsId);
+        Navigation.findNavController(view).navigate(action);
     }
 }

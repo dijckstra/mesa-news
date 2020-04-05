@@ -11,12 +11,10 @@ public interface NewsContract {
 
         void showLatestNews(final List<News> latestNews);
 
-        void showArticle(final String url);
+        void showArticle(final android.view.View view, final int newsId);
     }
 
     interface Presenter {
         void start();
-
-        void openNewsURL(final String url);
     }
 }
