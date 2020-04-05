@@ -8,11 +8,16 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import inc.mesa.mesanews.R;
+import inc.mesa.mesanews.auth.AuthManager;
 import inc.mesa.mesanews.data.News;
 import inc.mesa.mesanews.data.source.NewsRepository;
 
@@ -25,17 +30,22 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     private NewsListAdapter highlightsListAdapter;
     private NewsListAdapter latestNewsAdapter;
 
+    private AuthManager authManager;
     private NewsContract.Presenter presenter;
 
     @Override
     public View onCreateView(final LayoutInflater inflater,
                              final ViewGroup container,
                              final Bundle savedInstanceState) {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_news, container, false);
 
+        authManager = AuthManager.getInstance(getContext());
+
         // Create the presenter
-        presenter = new NewsPresenter(NewsRepository.getInstance(), this);
+        presenter = new NewsPresenter(NewsRepository.getInstance(), authManager, this);
 
         // Set up RecyclerViews
         highlightsRecyclerView = root.findViewById(R.id.rv_highlights);
@@ -54,6 +64,18 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         latestNewsRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        NavController controller = Navigation.findNavController(view);
+        String authToken = authManager.getAuthToken();
+
+        if (authToken == null) {
+            controller.navigate(R.id.action_display_splash);
+        }
     }
 
     @Override
