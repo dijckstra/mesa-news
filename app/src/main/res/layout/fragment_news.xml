@@ -2,43 +2,53 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".news.NewsFragment">
 
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/top_news" />
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/top_news" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_highlights"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_carousel_news" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_highlights"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_carousel_news" />
+    </LinearLayout>
 
     <View android:id="@+id/tile_divider"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:background="?android:attr/dividerHorizontal" />
+        android:background="@color/gray_stroke"/>
 
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/latest_news" />
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/latest_news" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_latest_news"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_list_news"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_latest_news"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_list_news"/>
+    </LinearLayout>
+
 </LinearLayout>
