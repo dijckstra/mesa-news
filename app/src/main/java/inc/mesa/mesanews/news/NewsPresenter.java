@@ -3,6 +3,7 @@ package inc.mesa.mesanews.news;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import inc.mesa.mesanews.auth.AuthManager;
 import inc.mesa.mesanews.data.News;
 import inc.mesa.mesanews.data.source.NewsRepository;
 
@@ -11,10 +12,14 @@ public class NewsPresenter implements NewsContract.Presenter {
     private static final String TAG = "NewsPresenter";
 
     private NewsRepository newsRepository;
+    private AuthManager authManager;
     private NewsContract.View view;
 
-    public NewsPresenter(final NewsRepository newsRepository, @NonNull final NewsContract.View view) {
+    public NewsPresenter(final NewsRepository newsRepository,
+                         final AuthManager authManager,
+                         @NonNull final NewsContract.View view) {
         this.newsRepository = newsRepository;
+        this.authManager = authManager;
         this.view = view;
     }
 
