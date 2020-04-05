@@ -1,4 +1,4 @@
-package inc.mesa.mesanews.service;
+package inc.mesa.mesanews.client;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
