@@ -9,5 +9,19 @@
         android:id="@+id/news_fragment"
         android:name="inc.mesa.mesanews.news.NewsFragment"
         android:label="fragment_news"
-        tools:layout="@layout/fragment_news" />
+        tools:layout="@layout/fragment_news" >
+        <action
+            android:id="@+id/open_article"
+            app:destination="@id/article_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/article_fragment"
+        android:name="inc.mesa.mesanews.article.ArticleFragment"
+        android:label="fragment_article"
+        tools:layout="@layout/fragment_article">
+        <argument
+            android:name="newsId"
+            app:argType="integer" />
+    </fragment>
 </navigation>
