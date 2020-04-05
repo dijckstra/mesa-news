@@ -3,4 +3,5 @@
 
     <string name="top_news">Top news</string>
     <string name="latest_news">Latest news</string>
+    <string name="favorite">Mark as favorite</string>
 </resources>
