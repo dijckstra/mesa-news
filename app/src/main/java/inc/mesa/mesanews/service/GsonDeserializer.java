@@ -32,7 +32,7 @@ public class GsonDeserializer implements JsonDeserializer<List<News>> {
             String url = obj.get("url").getAsString();
             String imageUrl = obj.get("image_url").getAsString();
 
-            newsList.add(new News(title, description, url, imageUrl));
+            newsList.add(new News(-1, title, description, url, imageUrl, false));
         }
 
         return newsList;
