@@ -2,7 +2,6 @@ package inc.mesa.mesanews.data.source.remote;
 
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
@@ -56,5 +55,15 @@ public class NewsRemoteDataSource implements NewsDataSource {
                 Log.e(TAG, t.getLocalizedMessage());
             }
         });
+    }
+
+    @Override
+    public void getNewsArticle(final int newsId, final ArticleResult callback) {
+        // no-op
+    }
+
+    @Override
+    public void toggleFavorite(final int newsId) {
+        // no-op
     }
 }

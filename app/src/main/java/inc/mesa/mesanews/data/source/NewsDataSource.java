@@ -10,5 +10,13 @@ public interface NewsDataSource {
         void onNewsLoaded(final List<News> news);
     }
 
+    interface ArticleResult {
+        void onArticleLoaded(News news);
+    }
+
     void getNews(final boolean highlights, final NewsResult callback);
+
+    void getNewsArticle(int newsId, final ArticleResult callback);
+
+    void toggleFavorite(int newsId);
 }
