@@ -3,13 +3,50 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
     app:startDestination="@id/news_fragment">
+
+    <fragment
+        android:id="@+id/splash_fragment"
+        android:name="inc.mesa.mesanews.splash.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_display_log_in"
+            app:destination="@id/log_in_fragment" />
+
+        <action
+            android:id="@+id/action_display_sign_up"
+            app:destination="@id/sign_up_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/log_in_fragment"
+        android:name="inc.mesa.mesanews.login.LogInFragment"
+        android:label="fragment_log_in"
+        tools:layout="@layout/fragment_log_in" />
+
+    <fragment
+        android:id="@+id/sign_up_fragment"
+        android:name="inc.mesa.mesanews.signup.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" />
+
+    <action
+        android:id="@+id/action_display_home"
+        app:destination="@id/news_fragment"
+        app:popUpTo="@id/splash_fragment"
+        app:popUpToInclusive="true" />
 
     <fragment
         android:id="@+id/news_fragment"
         android:name="inc.mesa.mesanews.news.NewsFragment"
         android:label="fragment_news"
-        tools:layout="@layout/fragment_news" >
+        tools:layout="@layout/fragment_news">
+        <action
+            android:id="@+id/action_display_splash"
+            app:destination="@id/splash_fragment"/>
+
         <action
             android:id="@+id/open_article"
             app:destination="@id/article_fragment" />
@@ -24,4 +61,5 @@
             android:name="newsId"
             app:argType="integer" />
     </fragment>
+
 </navigation>
