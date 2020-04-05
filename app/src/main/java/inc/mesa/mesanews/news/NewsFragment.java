@@ -6,13 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import inc.mesa.mesanews.R;
 import inc.mesa.mesanews.data.News;
+import inc.mesa.mesanews.data.source.NewsRepository;
 
 public class NewsFragment extends Fragment implements NewsContract.View {
 
@@ -20,7 +21,8 @@ public class NewsFragment extends Fragment implements NewsContract.View {
 
     private RecyclerView highlightsRecyclerView;
     private RecyclerView latestNewsRecyclerView;
-    private NewsListAdapter newsListAdapter;
+    private NewsListAdapter highlightsListAdapter;
+    private NewsListAdapter latestNewsAdapter;
 
     private NewsContract.Presenter presenter;
 
@@ -29,22 +31,51 @@ public class NewsFragment extends Fragment implements NewsContract.View {
                              final ViewGroup container,
                              final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View fragment = inflater.inflate(R.layout.fragment_news, container, false);
+        View root = inflater.inflate(R.layout.fragment_news, container, false);
 
         // Create the presenter
-        presenter = new NewsPresenter(this);
+        presenter = new NewsPresenter(NewsRepository.getInstance(), this);
 
         // Set up RecyclerViews
-        highlightsRecyclerView = fragment.findViewById(R.id.rv_highlights);
-        latestNewsRecyclerView = fragment.findViewById(R.id.rv_latest_news);
+        highlightsRecyclerView = root.findViewById(R.id.rv_highlights);
+        latestNewsRecyclerView = root.findViewById(R.id.rv_latest_news);
 
-        highlightsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        latestNewsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        newsListAdapter = new NewsListAdapter(getContext(), new ArrayList<News>(), presenter);
-        highlightsRecyclerView.setAdapter(newsListAdapter);
-        latestNewsRecyclerView.setAdapter(newsListAdapter);
+        highlightsListAdapter = new NewsListAdapter(getContext(), new ArrayList<>(), presenter, true);
+        highlightsRecyclerView.setAdapter(highlightsListAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
+                                                                    LinearLayoutManager.HORIZONTAL,
+                                                                    false);
+        highlightsRecyclerView.setLayoutManager(layoutManager);
 
-        return fragment;
+        latestNewsAdapter = new NewsListAdapter(getContext(), new ArrayList<>(), presenter, false);
+        latestNewsRecyclerView.setAdapter(latestNewsAdapter);
+        latestNewsRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+        return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.start();
+    }
+
+    /* View contract methods */
+    @Override
+    public void showHighlights(final List<News> highlights) {
+        highlightsListAdapter.replaceData(highlights);
+        highlightsRecyclerView.setAdapter(highlightsListAdapter);
+    }
+
+    @Override
+    public void showLatestNews(final List<News> latestNews) {
+        latestNewsAdapter.replaceData(latestNews);
+        latestNewsRecyclerView.setAdapter(latestNewsAdapter);
+    }
+
+    @Override
+    public void showArticle(final String url) {
+
     }
 }
