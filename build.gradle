@@ -2,12 +2,18 @@
 
 buildscript {
     ext {
-        appCompatVersion = "1.1.0"
         navigationVersion = "2.2.1"
+        roomVersion = "2.2.5"
+        appCompatVersion = "1.1.0"
+        legacySupportVersion = "1.0.0"
+
         retrofitVersion = "2.8.1"
+        picassoVersion = "2.71828"
+
+        stethoVersion = "1.5.1"
+
         espressoVersion = "3.2.0"
         junitVersion = "1.1.1"
-        legacySupportVersion = "1.0.0"
     }
 
     repositories {

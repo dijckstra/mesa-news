@@ -8,17 +8,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitManager {
 
     private static final String BASE_URL = "https://mesa-news-api.herokuapp.com/v1/client/";
-    private static RetrofitManager INSTANCE;
 
-    private RetrofitManager() {}
-
-    public static RetrofitManager getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new RetrofitManager();
-        }
-
-        return INSTANCE;
-    }
+    public RetrofitManager() {}
 
     public Retrofit getClientInstance(@Nullable final Converter.Factory factory) {
         Retrofit.Builder builder = new Retrofit.Builder()
