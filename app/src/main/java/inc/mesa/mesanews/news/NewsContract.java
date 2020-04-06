@@ -19,6 +19,10 @@ public interface NewsContract {
     interface Presenter {
         void start();
 
+        void loadNews(final int page);
+
+        void loadHighlights();
+
         void loadNewsPage(final int listSize);
     }
 }

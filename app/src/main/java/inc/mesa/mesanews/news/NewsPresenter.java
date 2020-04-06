@@ -1,7 +1,5 @@
 package inc.mesa.mesanews.news;
 
-import android.util.Log;
-
 import java.util.List;
 
 import inc.mesa.mesanews.data.News;
@@ -24,38 +22,39 @@ public class NewsPresenter implements NewsContract.Presenter {
 
     @Override
     public void start() {
-        loadNews(true, 0);
-        loadNews(false, 1);
+        loadNews(1);
+        loadHighlights();
     }
 
     /* Presenter contract methods */
-    private void loadNews(final boolean highlights, final int page) {
-        Log.d(TAG, "loadNews");
-        if (highlights) {
-            this.newsRepository.getHighlights(new NewsDataSource.NewsResult() {
-                @Override
-                public void onNewsLoaded(final List<News> news) {
-                    processNews(true, news);
-                }
+    @Override
+    public void loadNews(final int page) {
+        this.newsRepository.getNews(page, ITEMS_PER_PAGE, new NewsDataSource.NewsResult() {
+            @Override
+            public void onNewsLoaded(final List<News> news) {
+                processNews(news);
+            }
 
-                @Override
-                public void onDataNotAvailable() {
+            @Override
+            public void onDataNotAvailable() {
+                view.showLoadingNewsError();
+            }
+        });
+    }
 
-                }
-            });
-        } else {
-            this.newsRepository.getNews(page, ITEMS_PER_PAGE, new NewsDataSource.NewsResult() {
-                @Override
-                public void onNewsLoaded(final List<News> news) {
-                    processNews(false, news);
-                }
+    @Override
+    public void loadHighlights() {
+        this.newsRepository.getHighlights(new NewsDataSource.NewsResult() {
+            @Override
+            public void onNewsLoaded(final List<News> news) {
+                processHighlights(news);
+            }
 
-                @Override
-                public void onDataNotAvailable() {
-                    view.showLoadingNewsError();
-                }
-            });
-        }
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
     }
 
     @Override
@@ -63,15 +62,15 @@ public class NewsPresenter implements NewsContract.Presenter {
         int nextPage = (listSize / ITEMS_PER_PAGE) + 1;
 
         newsRepository.refreshNews();
-        loadNews(false, nextPage);
+        loadNews(nextPage);
     }
 
     /* Private methods */
-    private void processNews(final boolean highlights, final List<News> news) {
-        if (highlights) {
-            view.showHighlights(news);
-        } else {
-            view.showLatestNews(news);
-        }
+    private void processNews(final List<News> newsList) {
+        view.showLatestNews(newsList);
+    }
+
+    private void processHighlights(final List<News> highlights) {
+        view.showHighlights(highlights);
     }
 }
