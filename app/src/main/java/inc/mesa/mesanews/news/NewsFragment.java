@@ -21,6 +21,7 @@ import inc.mesa.mesanews.R;
 import inc.mesa.mesanews.auth.AuthManager;
 import inc.mesa.mesanews.data.News;
 import inc.mesa.mesanews.dep.DependencyProvider;
+import inc.mesa.mesanews.ui.RecyclerViewPaginationScrollListener;
 
 public class NewsFragment extends Fragment implements NewsContract.View {
 
@@ -33,6 +34,7 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     private RecyclerView latestNewsRecyclerView;
     private NewsListAdapter highlightsListAdapter;
     private NewsListAdapter latestNewsAdapter;
+    private RecyclerViewPaginationScrollListener scrollListener;
 
     private AuthManager authManager;
     private NewsContract.Presenter presenter;
@@ -59,14 +61,17 @@ public class NewsFragment extends Fragment implements NewsContract.View {
 
         highlightsListAdapter = new NewsListAdapter(getContext(), new ArrayList<>(), this, true);
         highlightsRecyclerView.setAdapter(highlightsListAdapter);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
+        LinearLayoutManager highlightsLayoutManager = new LinearLayoutManager(getContext(),
                                                                     LinearLayoutManager.HORIZONTAL,
                                                                     false);
-        highlightsRecyclerView.setLayoutManager(layoutManager);
+        highlightsRecyclerView.setLayoutManager(highlightsLayoutManager);
 
         latestNewsAdapter = new NewsListAdapter(getContext(), new ArrayList<>(), this, false);
+        LinearLayoutManager newsLayoutManager = new LinearLayoutManager(this.getContext());
+        scrollListener = getScrollListener(newsLayoutManager);
         latestNewsRecyclerView.setAdapter(latestNewsAdapter);
-        latestNewsRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        latestNewsRecyclerView.setLayoutManager(newsLayoutManager);
+        latestNewsRecyclerView.addOnScrollListener(scrollListener);
 
         return root;
     }
@@ -98,7 +103,7 @@ public class NewsFragment extends Fragment implements NewsContract.View {
             highlightsRecyclerView.getLayoutManager().onRestoreInstanceState(savedHighlightsRecyclerState);
 
             Parcelable savedNewsRecyclerState = savedInstanceState.getParcelable(BUNDLE_NEWS_RECYCLER_LAYOUT);
-            highlightsRecyclerView.getLayoutManager().onRestoreInstanceState(savedNewsRecyclerState);
+            latestNewsRecyclerView.getLayoutManager().onRestoreInstanceState(savedNewsRecyclerState);
         }
     }
 
@@ -108,25 +113,38 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         outState.putParcelable(BUNDLE_HIGHLIGHTS_RECYCLER_LAYOUT,
                                highlightsRecyclerView.getLayoutManager().onSaveInstanceState());
         outState.putParcelable(BUNDLE_NEWS_RECYCLER_LAYOUT,
-                               highlightsRecyclerView.getLayoutManager().onSaveInstanceState());
+                               latestNewsRecyclerView.getLayoutManager().onSaveInstanceState());
     }
 
     /* View contract methods */
     @Override
     public void showHighlights(final List<News> highlights) {
         highlightsListAdapter.replaceData(highlights);
-        highlightsRecyclerView.setAdapter(highlightsListAdapter);
     }
 
     @Override
     public void showLatestNews(final List<News> latestNews) {
         latestNewsAdapter.replaceData(latestNews);
-        latestNewsRecyclerView.setAdapter(latestNewsAdapter);
     }
 
     @Override
     public void showArticle(final View view, final String newsId) {
         NewsFragmentDirections.OpenArticle action = NewsFragmentDirections.openArticle(newsId);
         Navigation.findNavController(view).navigate(action);
+    }
+
+    @Override
+    public void showLoadingNewsError() {
+        scrollListener.resetState();
+    }
+
+    /* Private methods */
+    private RecyclerViewPaginationScrollListener getScrollListener(final LinearLayoutManager newsLayoutManager) {
+        return new RecyclerViewPaginationScrollListener(newsLayoutManager) {
+            @Override
+            public void onLoadMore(final int totalItemsCount) {
+                presenter.loadNewsPage(totalItemsCount);
+            }
+        };
     }
 }

@@ -16,8 +16,6 @@ public class NewsPresenter implements NewsContract.Presenter {
     private NewsRepository newsRepository;
     private NewsContract.View view;
 
-    private int currentPage = 1;
-
     public NewsPresenter(final NewsRepository newsRepository,
                          final NewsContract.View view) {
         this.newsRepository = newsRepository;
@@ -26,12 +24,12 @@ public class NewsPresenter implements NewsContract.Presenter {
 
     @Override
     public void start() {
-        loadNews(true);
-        loadNews(false);
+        loadNews(true, 0);
+        loadNews(false, 1);
     }
 
     /* Presenter contract methods */
-    private void loadNews(final boolean highlights) {
+    private void loadNews(final boolean highlights, final int page) {
         Log.d(TAG, "loadNews");
         if (highlights) {
             this.newsRepository.getHighlights(new NewsDataSource.NewsResult() {
@@ -46,7 +44,7 @@ public class NewsPresenter implements NewsContract.Presenter {
                 }
             });
         } else {
-            this.newsRepository.getNews(currentPage, ITEMS_PER_PAGE, new NewsDataSource.NewsResult() {
+            this.newsRepository.getNews(page, ITEMS_PER_PAGE, new NewsDataSource.NewsResult() {
                 @Override
                 public void onNewsLoaded(final List<News> news) {
                     processNews(false, news);
@@ -54,10 +52,18 @@ public class NewsPresenter implements NewsContract.Presenter {
 
                 @Override
                 public void onDataNotAvailable() {
-
+                    view.showLoadingNewsError();
                 }
             });
         }
+    }
+
+    @Override
+    public void loadNewsPage(final int listSize) {
+        int nextPage = (listSize / ITEMS_PER_PAGE) + 1;
+
+        newsRepository.refreshNews();
+        loadNews(false, nextPage);
     }
 
     /* Private methods */

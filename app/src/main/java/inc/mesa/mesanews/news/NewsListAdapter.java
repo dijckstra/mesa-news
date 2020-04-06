@@ -80,8 +80,8 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
     }
 
     public void replaceData(final List<News> news) {
-        this.newsList = news;
-        notifyDataSetChanged();
+        this.newsList.addAll(news);
+        notifyItemRangeChanged(0, getItemCount());
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

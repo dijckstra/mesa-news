@@ -12,9 +12,13 @@ public interface NewsContract {
         void showLatestNews(final List<News> latestNews);
 
         void showArticle(final android.view.View view, final String newsId);
+
+        void showLoadingNewsError();
     }
 
     interface Presenter {
         void start();
+
+        void loadNewsPage(final int listSize);
     }
 }
