@@ -13,4 +13,8 @@
     <string name="your_name">Your name</string>
     <string name="choose_password">Choose a password</string>
     <string name="confirm_password">Confirm your password</string>
+
+    <string name="menu_filter">Filter</string>
+    <string name="nav_all">All</string>
+    <string name="nav_favorites">Favorites</string>
 </resources>
