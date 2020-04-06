@@ -8,15 +8,19 @@ public interface NewsDataSource {
 
     interface NewsResult {
         void onNewsLoaded(final List<News> news);
+        void onDataNotAvailable();
     }
-
     interface ArticleResult {
         void onArticleLoaded(News news);
     }
 
-    void getNews(final boolean highlights, final NewsResult callback);
+    void getNews(int currentPage, int perPage, final NewsResult callback);
 
-    void getNewsArticle(int newsId, final ArticleResult callback);
+    void getHighlights(final NewsResult callback);
 
-    void toggleFavorite(int newsId);
+    void getNewsArticle(final String newsId, final ArticleResult callback);
+
+    void addNewsArticle(final News news);
+
+    void toggleFavorite(final String newsId);
 }
