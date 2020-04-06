@@ -13,7 +13,7 @@ import android.widget.EditText;
 
 import androidx.navigation.Navigation;
 import inc.mesa.mesanews.R;
-import inc.mesa.mesanews.auth.AuthManager;
+import inc.mesa.mesanews.dep.DependencyProvider;
 
 public class LogInFragment extends Fragment implements LogInContract.View, View.OnClickListener {
 
@@ -26,13 +26,15 @@ public class LogInFragment extends Fragment implements LogInContract.View, View.
     private LogInContract.Presenter presenter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater,
+                             final ViewGroup container,
+                             final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_log_in, container, false);
 
         // Create the presenter
-        presenter = new LogInPresenter(AuthManager.getInstance(getContext()),
+        presenter = new LogInPresenter(DependencyProvider.getAuthManager(),
+                                       DependencyProvider.getRetrofitManager(),
                                        this);
 
         etEmail = root.findViewById(R.id.et_email);

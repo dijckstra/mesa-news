@@ -2,19 +2,16 @@ package inc.mesa.mesanews.signup;
 
 
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import inc.mesa.mesanews.R;
-import inc.mesa.mesanews.auth.AuthManager;
+import inc.mesa.mesanews.dep.DependencyProvider;
 
 public class SignUpFragment extends Fragment implements SignUpContract.View, View.OnClickListener {
 
@@ -27,13 +24,15 @@ public class SignUpFragment extends Fragment implements SignUpContract.View, Vie
     private SignUpContract.Presenter presenter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater,
+                             final ViewGroup container,
+                             final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
         // Create the presenter
-        presenter = new SignUpPresenter(AuthManager.getInstance(getContext()),
+        presenter = new SignUpPresenter(DependencyProvider.getAuthManager(),
+                                        DependencyProvider.getRetrofitManager(),
                                         this);
 
         etName = root.findViewById(R.id.et_name);

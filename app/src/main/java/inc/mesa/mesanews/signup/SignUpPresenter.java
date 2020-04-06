@@ -21,13 +21,12 @@ public class SignUpPresenter implements SignUpContract.Presenter {
     private SignUpContract.View view;
 
     public SignUpPresenter(final AuthManager authManager,
+                           final RetrofitManager retrofitManager,
                            final SignUpContract.View view) {
         this.view = view;
         this.authManager = authManager;
 
-        RetrofitManager manager = RetrofitManager.getInstance();
-        this.client = manager.getClientInstance(null).create(NewsClient.class);
-
+        this.client = retrofitManager.getClientInstance(null).create(NewsClient.class);
     }
 
     @Override

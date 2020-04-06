@@ -21,12 +21,12 @@ public class LogInPresenter implements LogInContract.Presenter {
     private LogInContract.View view;
 
     public LogInPresenter(final AuthManager authManager,
+                          final RetrofitManager retrofitManager,
                           final LogInContract.View view) {
         this.view = view;
         this.authManager = authManager;
 
-        RetrofitManager manager = RetrofitManager.getInstance();
-        this.client = manager.getClientInstance(null).create(NewsClient.class);
+        this.client = retrofitManager.getClientInstance(null).create(NewsClient.class);
     }
 
     @Override

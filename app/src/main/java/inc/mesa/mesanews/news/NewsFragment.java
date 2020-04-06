@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import inc.mesa.mesanews.R;
 import inc.mesa.mesanews.auth.AuthManager;
 import inc.mesa.mesanews.data.News;
-import inc.mesa.mesanews.data.source.NewsRepository;
+import inc.mesa.mesanews.dep.DependencyProvider;
 
 public class NewsFragment extends Fragment implements NewsContract.View {
 
@@ -42,10 +42,11 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_news, container, false);
 
-        authManager = AuthManager.getInstance(getContext());
+        authManager = DependencyProvider.getAuthManager();
 
         // Create the presenter
-        presenter = new NewsPresenter(NewsRepository.getInstance(), authManager, this);
+        presenter = new NewsPresenter(DependencyProvider.getNewsRepository(),
+                                      this);
 
         // Set up RecyclerViews
         highlightsRecyclerView = root.findViewById(R.id.rv_highlights);
