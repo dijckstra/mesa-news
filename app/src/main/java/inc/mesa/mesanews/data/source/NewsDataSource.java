@@ -14,6 +14,8 @@ public interface NewsDataSource {
         void onArticleLoaded(News news);
     }
 
+    void refreshNews();
+
     void getNews(int currentPage, int perPage, final NewsResult callback);
 
     void getHighlights(final NewsResult callback);

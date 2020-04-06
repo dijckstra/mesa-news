@@ -63,7 +63,8 @@ public class NewsRemoteDataSource implements NewsDataSource {
 
             @Override
             public void onFailure(final Call<List<News>> call, final Throwable t) {
-                Log.e(TAG, t.getLocalizedMessage());
+                Log.e(TAG, "Request to " + call.request().url() + " failed: " + t.toString());
+                callback.onDataNotAvailable();
             }
         });
     }
@@ -80,6 +81,11 @@ public class NewsRemoteDataSource implements NewsDataSource {
 
     @Override
     public void toggleFavorite(final String newsId) {
+        // no-op
+    }
+
+    @Override
+    public void refreshNews() {
         // no-op
     }
 }

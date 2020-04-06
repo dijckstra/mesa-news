@@ -13,6 +13,7 @@ public class NewsRepository implements NewsDataSource {
     private final NewsDataSource newsRemoteDataSource;
 
     private Map<String, News> cache;
+    private boolean isCacheDirty = false;
 
     public NewsRepository(final NewsDataSource newsLocalDataSource,
                            final NewsDataSource newsRemoteDataSource) {
@@ -21,8 +22,13 @@ public class NewsRepository implements NewsDataSource {
     }
 
     @Override
+    public void refreshNews() {
+        isCacheDirty = true;
+    }
+
+    @Override
     public void getNews(final int currentPage, final int perPage, final NewsResult callback) {
-        if (cache != null) {
+        if (cache != null && !isCacheDirty) {
             Map<String, News> cachedNews = filterHighlights(cache, false);
             callback.onNewsLoaded(new ArrayList<>(cachedNews.values()));
             return;
@@ -115,6 +121,8 @@ public class NewsRepository implements NewsDataSource {
         for (News news : newsList) {
             cache.put(news.getId(), news);
         }
+
+        isCacheDirty = false;
     }
 
     private void refreshLocalDataSource(final List<News> newsList) {

@@ -65,4 +65,9 @@ public class NewsLocalDataSource implements NewsDataSource {
     public void toggleFavorite(final String newsId) {
         executors.diskIO().execute(() -> newsDao.toggleFavorite(newsId));
     }
+
+    @Override
+    public void refreshNews() {
+        // no-op
+    }
 }
