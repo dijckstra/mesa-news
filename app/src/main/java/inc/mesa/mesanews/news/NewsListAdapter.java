@@ -1,12 +1,13 @@
 package inc.mesa.mesanews.news;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -65,12 +66,12 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int pos) {
         News news = newsList.get(pos);
 
-        Log.d(TAG, news.toString());
-
         holder.tvTitle.setText(news.getTitle());
         holder.tvDescription.setText(news.getDescription());
 
-        // TODO load image into ImageView
+        Picasso.get()
+                .load(news.getImageUrl())
+                .into(holder.ivThumbnail);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package inc.mesa.mesanews.news;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,9 @@ import inc.mesa.mesanews.data.News;
 import inc.mesa.mesanews.dep.DependencyProvider;
 
 public class NewsFragment extends Fragment implements NewsContract.View {
+
+    private static final String BUNDLE_HIGHLIGHTS_RECYCLER_LAYOUT = "inc.mesa.mesanews.highlightsrecycler.layout";
+    private static final String BUNDLE_NEWS_RECYCLER_LAYOUT = "inc.mesa.mesanews.newsrecycler.layout";
 
     private static final String TAG = "NewsFragment";
 
@@ -83,6 +87,28 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     public void onResume() {
         super.onResume();
         presenter.start();
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable final Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+        if(savedInstanceState != null) {
+            Parcelable savedHighlightsRecyclerState = savedInstanceState.getParcelable(BUNDLE_HIGHLIGHTS_RECYCLER_LAYOUT);
+            highlightsRecyclerView.getLayoutManager().onRestoreInstanceState(savedHighlightsRecyclerState);
+
+            Parcelable savedNewsRecyclerState = savedInstanceState.getParcelable(BUNDLE_NEWS_RECYCLER_LAYOUT);
+            highlightsRecyclerView.getLayoutManager().onRestoreInstanceState(savedNewsRecyclerState);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(BUNDLE_HIGHLIGHTS_RECYCLER_LAYOUT,
+                               highlightsRecyclerView.getLayoutManager().onSaveInstanceState());
+        outState.putParcelable(BUNDLE_NEWS_RECYCLER_LAYOUT,
+                               highlightsRecyclerView.getLayoutManager().onSaveInstanceState());
     }
 
     /* View contract methods */

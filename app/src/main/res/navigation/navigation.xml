@@ -59,7 +59,7 @@
         tools:layout="@layout/fragment_article">
         <argument
             android:name="newsId"
-            app:argType="integer" />
+            app:argType="string" />
     </fragment>
 
 </navigation>
