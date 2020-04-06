@@ -21,9 +21,10 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
 
     private Context context;
     private List<News> newsList;
-    private RecyclerView recyclerView;
     private View.OnClickListener onClickListener;
     private boolean highlight;
+
+    private RecyclerView recyclerView;
 
     public NewsListAdapter(final Context context,
                            final List<News> newsList,
@@ -34,7 +35,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
         this.onClickListener = view -> {
             int pos = recyclerView.getChildAdapterPosition(view);
             News news = this.newsList.get(pos);
-            int newsId = news.getId();
+            String newsId = news.getId();
 
             newsView.showArticle(view, newsId);
         };

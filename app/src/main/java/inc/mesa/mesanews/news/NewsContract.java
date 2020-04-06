@@ -11,7 +11,7 @@ public interface NewsContract {
 
         void showLatestNews(final List<News> latestNews);
 
-        void showArticle(final android.view.View view, final int newsId);
+        void showArticle(final android.view.View view, final String newsId);
     }
 
     interface Presenter {

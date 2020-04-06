@@ -10,6 +10,7 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import inc.mesa.mesanews.data.News;
 
@@ -31,8 +32,9 @@ public class GsonDeserializer implements JsonDeserializer<List<News>> {
             String description = obj.get("description").getAsString();
             String url = obj.get("url").getAsString();
             String imageUrl = obj.get("image_url").getAsString();
+            boolean highlight = obj.get("highlight").getAsBoolean();
 
-            newsList.add(new News(-1, title, description, url, imageUrl, false));
+            newsList.add(new News(UUID.randomUUID().toString(), title, description, url, imageUrl, highlight, false));
         }
 
         return newsList;

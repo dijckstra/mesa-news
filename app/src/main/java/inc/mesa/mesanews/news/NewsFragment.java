@@ -99,7 +99,7 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     }
 
     @Override
-    public void showArticle(final View view, final int newsId) {
+    public void showArticle(final View view, final String newsId) {
         NewsFragmentDirections.OpenArticle action = NewsFragmentDirections.openArticle(newsId);
         Navigation.findNavController(view).navigate(action);
     }
