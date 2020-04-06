@@ -1,73 +1,63 @@
 package inc.mesa.mesanews.data;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class News {
 
-    private int id;
+    @PrimaryKey
+    private String id;
     private String title;
     private String description;
     private String url;
+    @ColumnInfo(name = "image_url")
     private String imageUrl;
+    private boolean highlight;
     private boolean favorite;
 
-    public News(final int id,
+    public News(final String id,
                 final String title,
                 final String description,
                 final String url,
-                final String thumbnail,
+                final String imageUrl,
+                final boolean highlight,
                 final boolean favorite) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.url = url;
-        this.imageUrl = thumbnail;
+        this.imageUrl = imageUrl;
+        this.highlight = highlight;
         this.favorite = favorite;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
-    }
-
-    public void setId(final int id) {
-        this.id = id;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(final String title) {
-        this.title = title;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(final String description) {
-        this.description = description;
     }
 
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(final String url) {
-        this.url = url;
-    }
-
     public String getImageUrl() {
         return imageUrl;
     }
 
-    public void setImageUrl(final String imageUrl) {
-        this.imageUrl = imageUrl;
+    public boolean isHighlight() {
+        return highlight;
     }
 
     public boolean isFavorite() {
         return favorite;
-    }
-
-    public void setFavorite(final boolean favorite) {
-        this.favorite = favorite;
     }
 }
