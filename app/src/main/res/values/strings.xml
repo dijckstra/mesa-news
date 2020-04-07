@@ -15,9 +15,16 @@
     <string name="confirm_password">Confirm your password</string>
 
     <string name="menu_filter">Filter</string>
+    <string name="filter_by">Filter news by: </string>
     <string name="nav_all">All</string>
     <string name="nav_favorites">Favorites</string>
 
     <string name="facebook_app_id">2902426843159773</string>
     <string name="fb_login_protocol_scheme">fb2902426843159773</string>
+
+    <string-array name="filter_types">
+        <item>Choose a filter</item>
+        <item>Favorites</item>
+        <item>Date</item>
+    </string-array>
 </resources>

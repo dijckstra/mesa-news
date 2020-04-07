@@ -38,6 +38,10 @@
         app:popUpTo="@id/splash_fragment"
         app:popUpToInclusive="true" />
 
+    <action
+        android:id="@+id/action_display_article"
+        app:destination="@id/article_fragment"/>
+
     <fragment
         android:id="@+id/news_fragment"
         android:name="inc.mesa.mesanews.news.NewsFragment"
@@ -62,4 +66,9 @@
             app:argType="string" />
     </fragment>
 
+    <fragment
+        android:id="@+id/filter_fragment"
+        android:name="inc.mesa.mesanews.filter.FilterFragment"
+        android:label="fragment_filter"
+        tools:layout="@layout/fragment_filter" />
 </navigation>
