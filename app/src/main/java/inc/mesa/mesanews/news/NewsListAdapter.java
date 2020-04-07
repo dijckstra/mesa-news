@@ -79,9 +79,14 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
         return this.newsList.size();
     }
 
-    public void replaceData(final List<News> news) {
+    public void appendData(final List<News> news) {
         this.newsList.addAll(news);
         notifyItemRangeChanged(0, getItemCount());
+    }
+
+    public void replaceData(final List<News> news) {
+        this.newsList = news;
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

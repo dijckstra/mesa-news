@@ -3,8 +3,12 @@ package inc.mesa.mesanews.news;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +26,9 @@ import inc.mesa.mesanews.auth.AuthManager;
 import inc.mesa.mesanews.data.News;
 import inc.mesa.mesanews.dep.DependencyProvider;
 import inc.mesa.mesanews.ui.RecyclerViewPaginationScrollListener;
+
+import static inc.mesa.mesanews.news.NewsContract.ALL;
+import static inc.mesa.mesanews.news.NewsContract.FAVORITES;
 
 public class NewsFragment extends Fragment implements NewsContract.View {
 
@@ -44,6 +51,7 @@ public class NewsFragment extends Fragment implements NewsContract.View {
                              final ViewGroup container,
                              final Bundle savedInstanceState) {
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        setHasOptionsMenu(true);
 
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_news, container, false);
@@ -116,15 +124,59 @@ public class NewsFragment extends Fragment implements NewsContract.View {
                                latestNewsRecyclerView.getLayoutManager().onSaveInstanceState());
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull final Menu menu, @NonNull final MenuInflater inflater) {
+        inflater.inflate(R.menu.news_fragment_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
+        if (item.getItemId() == R.id.menu_filter) {
+            showFilteringMenu();
+        }
+
+        return true;
+    }
+
     /* View contract methods */
+    @Override
+    public void showFilteringMenu() {
+        PopupMenu filterMenu = new PopupMenu(getContext(),
+                                             getActivity().findViewById(R.id.menu_filter));
+        filterMenu.getMenuInflater().inflate(R.menu.filter_news, filterMenu.getMenu());
+
+        filterMenu.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.favorites:
+                     presenter.setFiltering(FAVORITES);
+                    break;
+                case R.id.all:
+                default:
+                    presenter.setFiltering(ALL);
+                    break;
+            }
+
+            scrollListener.resetState();
+            presenter.loadAllNews();
+
+            return true;
+        });
+
+        filterMenu.show();
+    }
+
     @Override
     public void showHighlights(final List<News> highlights) {
         highlightsListAdapter.replaceData(highlights);
     }
 
     @Override
-    public void showLatestNews(final List<News> latestNews) {
-        latestNewsAdapter.replaceData(latestNews);
+    public void showLatestNews(final List<News> latestNews, boolean shouldReplace) {
+        if (shouldReplace) {
+            latestNewsAdapter.replaceData(latestNews);
+        } else {
+            latestNewsAdapter.appendData(latestNews);
+        }
     }
 
     @Override

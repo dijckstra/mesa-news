@@ -65,13 +65,11 @@ public class ArticleFragment extends Fragment implements ArticleContract.View {
     @Override
     public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
         if (item.getItemId() == R.id.menu_favorite) {
-            boolean favorite = item.isChecked();
-            presenter.toggleFavorite(favorite);
-
-            return true;
+            boolean currentState = item.isChecked();
+            presenter.toggleFavorite(currentState);
         }
 
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     @Override

@@ -20,6 +20,8 @@ public abstract class RecyclerViewPaginationScrollListener extends RecyclerView.
 
     @Override
     public void onScrolled(@NonNull RecyclerView view, int dx, int dy) {
+        if (dy == 0) return;
+
         int lastVisibleItemPosition;
         int totalItemCount = mLayoutManager.getItemCount();
 

@@ -4,6 +4,8 @@ import inc.mesa.mesanews.data.source.NewsRepository;
 
 public class ArticlePresenter implements ArticleContract.Presenter {
 
+    private static final String TAG = "ArticlePresenter";
+
     private NewsRepository repository;
     private ArticleContract.View view;
     private String newsId;
