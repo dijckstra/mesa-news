@@ -15,8 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import inc.mesa.mesanews.R;
 import inc.mesa.mesanews.data.News;
-import inc.mesa.mesanews.filter.FilterContract;
-import inc.mesa.mesanews.news.NewsContract;
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHolder> {
 
@@ -24,39 +22,24 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
 
     private Context context;
     private List<News> newsList;
-    private View.OnClickListener onClickListener;
+    private NewsItemListener itemListener;
     private boolean highlight;
 
     private RecyclerView recyclerView;
 
     public NewsListAdapter(final Context context,
                            final List<News> newsList,
-                           final FilterContract.View filterView) {
-        this.context = context;
-        this.newsList = newsList;
-        this.onClickListener = view -> {
-            int pos = recyclerView.getChildAdapterPosition(view);
-            News news = this.newsList.get(pos);
-            String newsId = news.getId();
-
-            filterView.showArticle(view, newsId);
-        };
-        this.highlight = false;
+                           final NewsItemListener listener) {
+        this(context, newsList, listener, false);
     }
 
     public NewsListAdapter(final Context context,
                            final List<News> newsList,
-                           final NewsContract.View newsView,
+                           final NewsItemListener listener,
                            final boolean highlight) {
         this.context = context;
         this.newsList = newsList;
-        this.onClickListener = view -> {
-            int pos = recyclerView.getChildAdapterPosition(view);
-            News news = this.newsList.get(pos);
-            String newsId = news.getId();
-
-            newsView.showArticle(view, newsId);
-        };
+        this.itemListener = listener;
         this.highlight = highlight;
     }
 
@@ -74,7 +57,14 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
                     : R.layout.item_list_news;
 
         View v = LayoutInflater.from(this.context).inflate(layoutResId, parent, false);
-        v.setOnClickListener(this.onClickListener);
+        v.setOnClickListener(view -> {
+            int pos = recyclerView.getChildAdapterPosition(view);
+            News news = this.newsList.get(pos);
+            String newsId = news.getId();
+
+            itemListener.onNewsClick(newsId);
+
+        });
 
         return new ViewHolder(v);
     }
@@ -85,7 +75,9 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
 
         holder.tvTitle.setText(news.getTitle());
         holder.tvDescription.setText(news.getDescription());
-
+        holder.ivFavorite.setOnClickListener(v -> {
+            itemListener.onNewsFavoriteClick(news.getId());
+        });
         Picasso.get()
                 .load(news.getImageUrl())
                 .into(holder.ivThumbnail);
@@ -111,6 +103,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
         private ImageView ivThumbnail;
         private TextView tvTitle;
         private TextView tvDescription;
+        private ImageView ivFavorite;
 
         public ViewHolder(@NonNull final View itemView) {
             super(itemView);
@@ -118,6 +111,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
             ivThumbnail = itemView.findViewById(R.id.iv_thumbnail);
             tvTitle = itemView.findViewById(R.id.tv_title);
             tvDescription = itemView.findViewById(R.id.tv_description);
+            ivFavorite = itemView.findViewById(R.id.iv_favorite);
         }
     }
 }

@@ -24,6 +24,7 @@ import inc.mesa.mesanews.R;
 import inc.mesa.mesanews.auth.AuthManager;
 import inc.mesa.mesanews.data.News;
 import inc.mesa.mesanews.dep.DependencyProvider;
+import inc.mesa.mesanews.ui.NewsItemListener;
 import inc.mesa.mesanews.ui.NewsListAdapter;
 import inc.mesa.mesanews.ui.RecyclerViewPaginationScrollListener;
 
@@ -59,19 +60,32 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         presenter = new NewsPresenter(DependencyProvider.getNewsRepository(),
                                       this);
 
+        NewsItemListener newsItemListener = new NewsItemListener() {
+            @Override
+            public void onNewsClick(final String newsId) {
+                showArticle(newsId);
+            }
+
+            @Override
+            public void onNewsFavoriteClick(final String newsId) {
+                presenter.toggleFavorite(newsId);
+                presenter.refreshNews();
+            }
+        };
+
         // Set up RecyclerViews
         highlightsRecyclerView = root.findViewById(R.id.rv_highlights);
         latestNewsRecyclerView = root.findViewById(R.id.rv_latest_news);
 
 
-        highlightsListAdapter = new NewsListAdapter(getContext(), new ArrayList<>(), this, true);
+        highlightsListAdapter = new NewsListAdapter(getContext(), new ArrayList<>(), newsItemListener, true);
         highlightsRecyclerView.setAdapter(highlightsListAdapter);
         LinearLayoutManager highlightsLayoutManager = new LinearLayoutManager(getContext(),
                                                                     LinearLayoutManager.HORIZONTAL,
                                                                     false);
         highlightsRecyclerView.setLayoutManager(highlightsLayoutManager);
 
-        latestNewsAdapter = new NewsListAdapter(getContext(), new ArrayList<>(), this, false);
+        latestNewsAdapter = new NewsListAdapter(getContext(), new ArrayList<>(), newsItemListener, false);
         LinearLayoutManager newsLayoutManager = new LinearLayoutManager(this.getContext());
         scrollListener = getScrollListener(newsLayoutManager);
         latestNewsRecyclerView.setAdapter(latestNewsAdapter);
@@ -142,9 +156,9 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     }
 
     @Override
-    public void showArticle(final View view, final String newsId) {
+    public void showArticle(final String newsId) {
         MainNavDirections.ActionDisplayArticle action = MainNavDirections.actionDisplayArticle(newsId);
-        Navigation.findNavController(view).navigate(action);
+        Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
     }
 
     @Override

@@ -11,7 +11,7 @@ public interface NewsContract {
 
         void showLatestNews(final List<News> latestNews, boolean shouldReplace);
 
-        void showArticle(final android.view.View view, final String newsId);
+        void showArticle(final String newsId);
 
         void showLoadingNewsError();
     }
@@ -19,8 +19,12 @@ public interface NewsContract {
     interface Presenter {
         void start();
 
+        void refreshNews();
+
         void loadHighlights();
 
         void loadNewsPage(final int listSize);
+
+        void toggleFavorite(final String newsId);
     }
 }

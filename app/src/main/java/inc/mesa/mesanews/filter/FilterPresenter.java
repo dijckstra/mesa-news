@@ -48,6 +48,12 @@ public class FilterPresenter implements FilterContract.Presenter {
         this.currentFiltering = filterType;
     }
 
+    @Override
+    public void toggleFavorite(final String newsId) {
+        newsRepository.toggleFavorite(newsId);
+        loadNews();
+    }
+
     private List<News> processNews(final List<News> newsList) {
         List<News> newsToShow = new ArrayList<>();
 

@@ -114,7 +114,6 @@ public class LogInPresenter implements LogInContract.Presenter {
         signInCall.enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(final Call<AuthResponse> call, final Response<AuthResponse> response) {
-                Log.i(TAG, "sigIn:");
                 if (response.code() == HTTP_UNAUTHORIZED) {
                     signUp(name, email, hashedUserId);
                     return;
@@ -130,13 +129,11 @@ public class LogInPresenter implements LogInContract.Presenter {
 
             @Override
             public void onFailure(final Call<AuthResponse> call, final Throwable t) {
-                Log.e(TAG, "onFailure: " + t.getLocalizedMessage());
             }
         });
     }
 
     private void signUp(final String name, final String email, final String password) {
-        Log.d(TAG, "signUp");
         SignUpRequest request = new SignUpRequest.Builder()
                 .name(name)
                 .email(email)

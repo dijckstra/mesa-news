@@ -24,7 +24,7 @@ public interface FilterContract {
     interface View {
         void showNews(final List<News> news);
 
-        void showArticle(final android.view.View view, final String newsId);
+        void showArticle(final String newsId);
     }
 
     interface Presenter {
@@ -33,5 +33,7 @@ public interface FilterContract {
         void loadNews();
 
         void setFiltering(@NewsFilterType String filterType);
+
+        void toggleFavorite(final String newsId);
     }
 }

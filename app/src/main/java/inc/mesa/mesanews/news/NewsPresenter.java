@@ -23,8 +23,13 @@ public class NewsPresenter implements NewsContract.Presenter {
 
     @Override
     public void start() {
-        loadNews(1, true);
+        refreshNews();
         loadHighlights();
+    }
+
+    @Override
+    public void refreshNews() {
+        loadNews(1, true);
     }
 
     /* Presenter contract methods */
@@ -49,6 +54,12 @@ public class NewsPresenter implements NewsContract.Presenter {
 
         newsRepository.refreshNews();
         loadNews(nextPage, false);
+    }
+
+    @Override
+    public void toggleFavorite(final String newsId) {
+        newsRepository.toggleFavorite(newsId);
+        refreshNews();
     }
 
     private void loadNews(final int page, boolean shouldReplace) {

@@ -25,6 +25,7 @@ import inc.mesa.mesanews.MainNavDirections;
 import inc.mesa.mesanews.R;
 import inc.mesa.mesanews.data.News;
 import inc.mesa.mesanews.dep.DependencyProvider;
+import inc.mesa.mesanews.ui.NewsItemListener;
 import inc.mesa.mesanews.ui.NewsListAdapter;
 
 import static inc.mesa.mesanews.filter.FilterContract.DATE;
@@ -51,8 +52,21 @@ public class FilterFragment extends Fragment implements FilterContract.View, Ada
         presenter = new FilterPresenter(DependencyProvider.getNewsRepository(),
                                         this);
 
+        NewsItemListener newsItemListener = new NewsItemListener() {
+            @Override
+            public void onNewsClick(final String newsId) {
+                showArticle(newsId);
+            }
+
+            @Override
+            public void onNewsFavoriteClick(final String newsId) {
+                presenter.toggleFavorite(newsId);
+                presenter.loadNews();
+            }
+        };
+
         newsRecyclerView = root.findViewById(R.id.rv_news);
-        newsListAdapter = new NewsListAdapter(getContext(), new ArrayList<>(), this);
+        newsListAdapter = new NewsListAdapter(getContext(), new ArrayList<>(), newsItemListener);
 
         newsRecyclerView.setAdapter(newsListAdapter);
         newsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -92,10 +106,11 @@ public class FilterFragment extends Fragment implements FilterContract.View, Ada
     public void showNews(final List<News> news) {
         newsListAdapter.replaceData(news);
     }
+
     @Override
-    public void showArticle(final View view, final String newsId) {
+    public void showArticle(final String newsId) {
         MainNavDirections.ActionDisplayArticle action = MainNavDirections.actionDisplayArticle(newsId);
-        Navigation.findNavController(view).navigate(action);
+        Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
     }
 
     /* Spinner selection listener methods */
