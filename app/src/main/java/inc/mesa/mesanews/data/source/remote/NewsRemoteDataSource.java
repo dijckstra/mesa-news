@@ -63,10 +63,14 @@ public class NewsRemoteDataSource implements NewsDataSource {
 
             @Override
             public void onFailure(final Call<List<News>> call, final Throwable t) {
-                Log.e(TAG, "Request to " + call.request().url() + " failed: " + t.toString());
                 callback.onDataNotAvailable();
             }
         });
+    }
+
+    @Override
+    public void getAllNews(final NewsResult callback) {
+        // no-op
     }
 
     @Override

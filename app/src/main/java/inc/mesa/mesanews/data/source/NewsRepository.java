@@ -50,17 +50,6 @@ public class NewsRepository implements NewsDataSource {
         });
     }
 
-    private Map<String, News> filterHighlights(final Map<String, News> news, final boolean highlight) {
-        Map<String, News> filtered = new LinkedHashMap<>();
-        for (Map.Entry<String, News> entry : news.entrySet()) {
-            if (entry.getValue().isHighlight() == highlight) {
-                filtered.put(entry.getValue().getId(), entry.getValue());
-            }
-        }
-
-        return filtered;
-    }
-
     @Override
     public void getHighlights(final NewsResult callback) {
         if (cache != null) {
@@ -83,8 +72,70 @@ public class NewsRepository implements NewsDataSource {
         });
     }
 
-    private void getHighlightsFromRemoteDataSource(final NewsResult callback) {
-        this.newsRemoteDataSource.getHighlights(new NewsResult() {
+    @Override
+    public void getAllNews(final NewsResult callback) {
+        if (cache != null && !cache.isEmpty()) {
+            callback.onNewsLoaded(new ArrayList<>(cache.values()));
+            return;
+        }
+
+        newsLocalDataSource.getAllNews(new NewsResult() {
+            @Override
+            public void onNewsLoaded(final List<News> news) {
+                refreshCache(news);
+                callback.onNewsLoaded(news);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
+    }
+
+    @Override
+    public void getNewsArticle(final String newsId, final ArticleResult callback) {
+        News cachedNews = getNewsWithId(newsId);
+
+        if (cachedNews != null) {
+            callback.onArticleLoaded(cachedNews);
+            return;
+        }
+
+        this.newsLocalDataSource.getNewsArticle(newsId, news -> {
+            if (cache == null) {
+                cache = new LinkedHashMap<>();
+            }
+
+            cache.put(newsId, news);
+        });
+    }
+
+    @Override
+    public void toggleFavorite(final String newsId) {
+        this.newsLocalDataSource.toggleFavorite(newsId);
+
+        if (cache == null) {
+            cache = new LinkedHashMap<>();
+        }
+
+        News cachedNews = getNewsWithId(newsId);
+        News favoritedNews = new News.Builder(cachedNews)
+                .favorite(!cachedNews.isFavorite()).build();
+
+        cache.put(newsId, favoritedNews);
+    }
+
+    private News getNewsWithId(final String newsId) {
+        if (cache == null || cache.isEmpty()) {
+            return null;
+        } else {
+            return cache.get(newsId);
+        }
+    }
+
+    private void getNewsFromRemoteDataSource(final int currentPage, final int perPage, final NewsResult callback) {
+        this.newsRemoteDataSource.getNews(currentPage, perPage, new NewsResult() {
             @Override
             public void onNewsLoaded(final List<News> news) {
                 refreshCache(news);
@@ -99,8 +150,8 @@ public class NewsRepository implements NewsDataSource {
         });
     }
 
-    private void getNewsFromRemoteDataSource(final int currentPage, final int perPage, final NewsResult callback) {
-        this.newsRemoteDataSource.getNews(currentPage, perPage, new NewsResult() {
+    private void getHighlightsFromRemoteDataSource(final NewsResult callback) {
+        this.newsRemoteDataSource.getHighlights(new NewsResult() {
             @Override
             public void onNewsLoaded(final List<News> news) {
                 refreshCache(news);
@@ -133,49 +184,19 @@ public class NewsRepository implements NewsDataSource {
         }
     }
 
-    @Override
-    public void getNewsArticle(final String newsId, final ArticleResult callback) {
-        News cachedNews = getNewsWithId(newsId);
-
-        if (cachedNews != null) {
-            callback.onArticleLoaded(cachedNews);
-            return;
+    private Map<String, News> filterHighlights(final Map<String, News> news, final boolean highlight) {
+        Map<String, News> filtered = new LinkedHashMap<>();
+        for (Map.Entry<String, News> entry : news.entrySet()) {
+            if (entry.getValue().isHighlight() == highlight) {
+                filtered.put(entry.getValue().getId(), entry.getValue());
+            }
         }
 
-        this.newsLocalDataSource.getNewsArticle(newsId, news -> {
-            if (cache == null) {
-                cache = new LinkedHashMap<>();
-            }
-
-            cache.put(newsId, news);
-        });
+        return filtered;
     }
 
     @Override
     public void addNewsArticle(final News news) {
         // no-op
-    }
-
-    @Override
-    public void toggleFavorite(final String newsId) {
-        this.newsLocalDataSource.toggleFavorite(newsId);
-
-        if (cache == null) {
-            cache = new LinkedHashMap<>();
-        }
-
-        News cachedNews = getNewsWithId(newsId);
-        News favoritedNews = new News.Builder(cachedNews)
-                .favorite(!cachedNews.isFavorite()).build();
-
-        cache.put(newsId, favoritedNews);
-    }
-
-    private News getNewsWithId(final String newsId) {
-        if (cache == null || cache.isEmpty()) {
-            return null;
-        } else {
-            return cache.get(newsId);
-        }
     }
 }

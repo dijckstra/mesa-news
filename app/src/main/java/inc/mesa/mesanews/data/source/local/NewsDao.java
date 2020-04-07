@@ -16,6 +16,9 @@ public interface NewsDao {
     @Query("SELECT * FROM news WHERE highlight = 1")
     List<News> getHighlights();
 
+    @Query("SELECT * FROM news")
+    List<News> getAllNews();
+
     @Query("SELECT * FROM news WHERE id = :newsId")
     News getNewsById(String newsId);
 

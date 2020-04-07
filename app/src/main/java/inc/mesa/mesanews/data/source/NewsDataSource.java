@@ -10,6 +10,7 @@ public interface NewsDataSource {
         void onNewsLoaded(final List<News> news);
         void onDataNotAvailable();
     }
+
     interface ArticleResult {
         void onArticleLoaded(News news);
     }
@@ -19,6 +20,8 @@ public interface NewsDataSource {
     void getNews(int currentPage, int perPage, final NewsResult callback);
 
     void getHighlights(final NewsResult callback);
+
+    void getAllNews(final NewsResult callback);
 
     void getNewsArticle(final String newsId, final ArticleResult callback);
 

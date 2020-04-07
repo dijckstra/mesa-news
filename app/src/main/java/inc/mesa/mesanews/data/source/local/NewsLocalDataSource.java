@@ -34,6 +34,14 @@ public class NewsLocalDataSource implements NewsDataSource {
         });
     }
 
+    @Override
+    public void getAllNews(final NewsResult callback) {
+        executors.diskIO().execute(() -> {
+            List<News> news = newsDao.getAllNews();
+            handleResult(news, callback);
+        });
+    }
+
     private void handleResult(final List<News> news, final NewsResult callback) {
         executors.mainThread().execute(() -> {
             if (news.isEmpty()) {
