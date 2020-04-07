@@ -1,4 +1,4 @@
-package inc.mesa.mesanews.news;
+package inc.mesa.mesanews.ui;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import inc.mesa.mesanews.R;
 import inc.mesa.mesanews.data.News;
+import inc.mesa.mesanews.filter.FilterContract;
+import inc.mesa.mesanews.news.NewsContract;
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHolder> {
 
@@ -26,6 +28,21 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
     private boolean highlight;
 
     private RecyclerView recyclerView;
+
+    public NewsListAdapter(final Context context,
+                           final List<News> newsList,
+                           final FilterContract.View filterView) {
+        this.context = context;
+        this.newsList = newsList;
+        this.onClickListener = view -> {
+            int pos = recyclerView.getChildAdapterPosition(view);
+            News news = this.newsList.get(pos);
+            String newsId = news.getId();
+
+            filterView.showArticle(view, newsId);
+        };
+        this.highlight = false;
+    }
 
     public NewsListAdapter(final Context context,
                            final List<News> newsList,

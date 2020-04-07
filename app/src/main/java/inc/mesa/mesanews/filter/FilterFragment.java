@@ -25,7 +25,7 @@ import inc.mesa.mesanews.MainNavDirections;
 import inc.mesa.mesanews.R;
 import inc.mesa.mesanews.data.News;
 import inc.mesa.mesanews.dep.DependencyProvider;
-import inc.mesa.mesanews.news.NewsListAdapter;
+import inc.mesa.mesanews.ui.NewsListAdapter;
 
 import static inc.mesa.mesanews.filter.FilterContract.DATE;
 import static inc.mesa.mesanews.filter.FilterContract.FAVORITES;
