@@ -9,6 +9,8 @@ import inc.mesa.mesanews.data.News;
 
 public class NewsRepository implements NewsDataSource {
 
+    private static final String TAG = "NewsRepository";
+
     private final NewsDataSource newsLocalDataSource;
     private final NewsDataSource newsRemoteDataSource;
 
@@ -16,7 +18,7 @@ public class NewsRepository implements NewsDataSource {
     private boolean isCacheDirty = false;
 
     public NewsRepository(final NewsDataSource newsLocalDataSource,
-                           final NewsDataSource newsRemoteDataSource) {
+                          final NewsDataSource newsRemoteDataSource) {
         this.newsLocalDataSource = newsLocalDataSource;
         this.newsRemoteDataSource = newsRemoteDataSource;
     }
@@ -55,7 +57,7 @@ public class NewsRepository implements NewsDataSource {
                 filtered.put(entry.getValue().getId(), entry.getValue());
             }
         }
-        
+
         return filtered;
     }
 
@@ -133,7 +135,20 @@ public class NewsRepository implements NewsDataSource {
 
     @Override
     public void getNewsArticle(final String newsId, final ArticleResult callback) {
-        this.newsLocalDataSource.getNewsArticle(newsId, callback::onArticleLoaded);
+        News cachedNews = getNewsWithId(newsId);
+
+        if (cachedNews != null) {
+            callback.onArticleLoaded(cachedNews);
+            return;
+        }
+
+        this.newsLocalDataSource.getNewsArticle(newsId, news -> {
+            if (cache == null) {
+                cache = new LinkedHashMap<>();
+            }
+
+            cache.put(newsId, news);
+        });
     }
 
     @Override
@@ -144,5 +159,23 @@ public class NewsRepository implements NewsDataSource {
     @Override
     public void toggleFavorite(final String newsId) {
         this.newsLocalDataSource.toggleFavorite(newsId);
+
+        if (cache == null) {
+            cache = new LinkedHashMap<>();
+        }
+
+        News cachedNews = getNewsWithId(newsId);
+        News favoritedNews = new News.Builder(cachedNews)
+                .favorite(!cachedNews.isFavorite()).build();
+
+        cache.put(newsId, favoritedNews);
+    }
+
+    private News getNewsWithId(final String newsId) {
+        if (cache == null || cache.isEmpty()) {
+            return null;
+        } else {
+            return cache.get(newsId);
+        }
     }
 }

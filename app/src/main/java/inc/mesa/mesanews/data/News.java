@@ -62,4 +62,64 @@ public class News {
     public boolean isFavorite() {
         return favorite;
     }
+
+    public static class Builder {
+
+        private String id;
+        private String title;
+        private String description;
+        private String url;
+        private String imageUrl;
+        private boolean highlight;
+        private boolean favorite;
+
+        public Builder(final News news) {
+            this.id = news.id;
+            this.title = news.title;
+            this.description = news.description;
+            this.url = news.url;
+            this.imageUrl = news.imageUrl;
+            this.highlight = news.highlight;
+            this.favorite = news.favorite;
+        }
+
+        public Builder id(final String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder title(final String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder description(final String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder url(final String url) {
+            this.url = url;
+            return this;
+        }
+
+        public Builder imageUrl(final String imageUrl) {
+            this.imageUrl = imageUrl;
+            return this;
+        }
+
+        public Builder highlight(final boolean highlight) {
+            this.highlight = highlight;
+            return this;
+        }
+
+        public Builder favorite(final boolean favorite) {
+            this.favorite = favorite;
+            return this;
+        }
+
+        public News build() {
+            return new News(id, title, description, url, imageUrl, highlight, favorite);
+        }
+    }
 }
