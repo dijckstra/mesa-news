@@ -41,6 +41,7 @@ dependencies {
     implementation "com.squareup.picasso:picasso:$rootProject.picassoVersion"
 
     implementation "com.facebook.stetho:stetho:$rootProject.stethoVersion"
+    implementation "com.facebook.android:facebook-android-sdk:$rootProject.facebookSdkVersion"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation "androidx.test.ext:junit:$rootProject.junitVersion"

@@ -11,6 +11,7 @@ buildscript {
         picassoVersion = "2.71828"
 
         stethoVersion = "1.5.1"
+        facebookSdkVersion = "6.3.0"
 
         espressoVersion = "3.2.0"
         junitVersion = "1.1.1"
@@ -19,7 +20,7 @@ buildscript {
     repositories {
         google()
         jcenter()
-        
+        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.3'

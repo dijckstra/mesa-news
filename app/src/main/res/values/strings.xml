@@ -17,4 +17,7 @@
     <string name="menu_filter">Filter</string>
     <string name="nav_all">All</string>
     <string name="nav_favorites">Favorites</string>
+
+    <string name="facebook_app_id">2902426843159773</string>
+    <string name="fb_login_protocol_scheme">fb2902426843159773</string>
 </resources>
