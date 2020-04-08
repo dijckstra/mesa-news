@@ -41,10 +41,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:backgroundTint="@color/colorPrimaryDark"
         android:inputType="textPassword"
         android:hint="@string/confirm_password" />
+
+    <EditText
+        android:id="@+id/et_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:inputType="date"
+        android:hint="@string/your_birthday" />
 
     <Button
         android:id="@+id/bt_sign_up"

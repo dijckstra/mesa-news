@@ -22,6 +22,7 @@
     <string name="facebook_app_id">2902426843159773</string>
     <string name="fb_login_protocol_scheme">fb2902426843159773</string>
     <string name="or">or</string>
+    <string name="your_birthday">Your birthday</string>
 
     <string-array name="filter_types">
         <item>Choose a filter</item>
