@@ -2,6 +2,7 @@ package inc.mesa.mesanews.news;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -62,14 +63,18 @@ public class NewsFragment extends Fragment implements NewsContract.View {
 
         NewsItemListener newsItemListener = new NewsItemListener() {
             @Override
-            public void onNewsClick(final String newsId) {
-                showArticle(newsId);
+            public void onNewsClick(final News news) {
+                showArticle(news);
             }
 
             @Override
-            public void onNewsFavoriteClick(final String newsId) {
-                presenter.toggleFavorite(newsId);
-                presenter.refreshNews();
+            public void onNewsFavoriteClick(final News news) {
+                presenter.toggleFavorite(news.getId());
+                if (news.isHighlight()) {
+                    presenter.refreshHighlights();
+                } else {
+                    presenter.refreshNews();
+                }
             }
         };
 
@@ -103,7 +108,7 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         String authToken = authManager.getAuthToken();
 
         if (authToken == null) {
-            controller.navigate(R.id.action_display_splash);
+            controller.navigate(R.id.action_display_launcher);
         }
     }
 
@@ -143,6 +148,7 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     /* View contract methods */
     @Override
     public void showHighlights(final List<News> highlights) {
+        Log.d(TAG, "showHighlights");
         highlightsListAdapter.replaceData(highlights);
     }
 
@@ -156,8 +162,8 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     }
 
     @Override
-    public void showArticle(final String newsId) {
-        MainNavDirections.ActionDisplayArticle action = MainNavDirections.actionDisplayArticle(newsId);
+    public void showArticle(final News news) {
+        MainNavDirections.ActionDisplayArticle action = MainNavDirections.actionDisplayArticle(news.getId(), news.getTitle());
         Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
     }
 

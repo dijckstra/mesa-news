@@ -1,7 +1,5 @@
 package inc.mesa.mesanews.client;
 
-import android.util.Log;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -32,13 +30,20 @@ public class GsonDeserializer implements JsonDeserializer<List<News>> {
         for (JsonElement elem : jsonArray) {
             JsonObject obj = elem.getAsJsonObject();
 
-            String title = obj.get("title").toString();
-            String description = obj.get("description").toString();
+            JsonElement titleObj = obj.get("title");
+            String title = titleObj != null ? titleObj.getAsString() : null;
+
+            JsonElement descriptionObj = obj.get("description");
+            String description = descriptionObj != null ? descriptionObj.getAsString() : null;
+
             JsonElement urlObj = obj.get("url");
-            String url = urlObj != null ? urlObj.toString().replaceAll("\"", "") : null;
+            String url = urlObj != null ? urlObj.getAsString() : null;
+
             JsonElement imageUrlObj = obj.get("image_url");
-            String imageUrl = imageUrlObj != null ? imageUrlObj.toString().replaceAll("\"", "") : null;
-            boolean highlight = obj.get("highlight").getAsBoolean();
+            String imageUrl = imageUrlObj != null ? imageUrlObj.getAsString() : null;
+
+            JsonElement highlightObj = obj.get("highlight");
+            boolean highlight = highlightObj != null && highlightObj.getAsBoolean();
 
             newsList.add(new News(UUID.randomUUID().toString(), title, description, url, imageUrl, highlight, false));
         }

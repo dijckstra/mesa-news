@@ -60,10 +60,8 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
         v.setOnClickListener(view -> {
             int pos = recyclerView.getChildAdapterPosition(view);
             News news = this.newsList.get(pos);
-            String newsId = news.getId();
 
-            itemListener.onNewsClick(newsId);
-
+            itemListener.onNewsClick(news);
         });
 
         return new ViewHolder(v);
@@ -75,12 +73,18 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
 
         holder.tvTitle.setText(news.getTitle());
         holder.tvDescription.setText(news.getDescription());
+        holder.ivFavorite.setImageResource(getResFromState(news.isFavorite()));
         holder.ivFavorite.setOnClickListener(v -> {
-            itemListener.onNewsFavoriteClick(news.getId());
+            holder.ivFavorite.setImageResource(getResFromState(!news.isFavorite()));
+            itemListener.onNewsFavoriteClick(news);
         });
         Picasso.get()
                 .load(news.getImageUrl())
                 .into(holder.ivThumbnail);
+    }
+
+    private int getResFromState(boolean favorite) {
+        return favorite ? R.drawable.ic_favorite_enabled : R.drawable.ic_favorite_disabled;
     }
 
     @Override
@@ -111,7 +115,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
             ivThumbnail = itemView.findViewById(R.id.iv_thumbnail);
             tvTitle = itemView.findViewById(R.id.tv_title);
             tvDescription = itemView.findViewById(R.id.tv_description);
-            ivFavorite = itemView.findViewById(R.id.iv_favorite);
+            ivFavorite = itemView.findViewById(R.id.ib_favorite);
         }
     }
 }

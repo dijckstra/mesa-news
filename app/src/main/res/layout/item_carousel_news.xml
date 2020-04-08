@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ll_carousel_mews_item"
     android:layout_width="300dp"
     android:layout_height="128dp"
@@ -31,6 +32,7 @@
             android:textSize="16sp"
             android:maxLines="2"
             android:ellipsize="end"
+            android:textColor="@color/colorPrimaryDark"
             tools:text="Curabitur lobortis id lorem id bibendum. Ut id consectetur magna." />
         <TextView
             android:id="@+id/tv_description"
@@ -38,13 +40,16 @@
             android:layout_height="wrap_content"
             android:maxLines="2"
             android:ellipsize="end"
+            android:textColor="@color/colorPrimaryDark"
+            app:fontFamily="@font/avenir_book"
             tools:text="Aliquip exercitation minim laboris sit consequat exercitation duis consequat duis cillum." />
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/iv_favorite"
-        android:layout_width="wrap_content"
+    <ImageButton
+        android:id="@+id/ib_favorite"
+        android:layout_width="32dp"
         android:layout_height="match_parent"
-        android:src="@android:drawable/star_off"/>
+        tools:src="@drawable/ic_favorite_disabled"
+        android:background="?android:selectableItemBackgroundBorderless"/>
 
 </LinearLayout>

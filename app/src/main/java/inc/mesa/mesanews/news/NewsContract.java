@@ -11,7 +11,7 @@ public interface NewsContract {
 
         void showLatestNews(final List<News> latestNews, boolean shouldReplace);
 
-        void showArticle(final String newsId);
+        void showArticle(final News news);
 
         void showLoadingNewsError();
     }
@@ -20,6 +20,8 @@ public interface NewsContract {
         void start();
 
         void refreshNews();
+
+        void refreshHighlights();
 
         void loadHighlights();
 
