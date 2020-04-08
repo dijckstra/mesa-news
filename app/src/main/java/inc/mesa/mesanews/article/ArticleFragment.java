@@ -12,6 +12,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import inc.mesa.mesanews.R;
 import inc.mesa.mesanews.dep.DependencyProvider;
@@ -34,8 +35,11 @@ public class ArticleFragment extends Fragment implements ArticleContract.View {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_article, container, false);
 
-        // Create the presenter
         String newsId = ArticleFragmentArgs.fromBundle(getArguments()).getNewsId();
+        String newsTitle = ArticleFragmentArgs.fromBundle(getArguments()).getNewsTitle();
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(newsTitle);
+        // Create the presenter
         presenter = new ArticlePresenter(DependencyProvider.getNewsRepository(),
                                          this,
                                          newsId);
@@ -69,7 +73,7 @@ public class ArticleFragment extends Fragment implements ArticleContract.View {
             presenter.toggleFavorite(currentState);
         }
 
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -82,9 +86,9 @@ public class ArticleFragment extends Fragment implements ArticleContract.View {
         favoriteMenu.setChecked(favorite);
 
         if (favorite) {
-            favoriteMenu.setIcon(android.R.drawable.btn_plus);
+            favoriteMenu.setIcon(R.drawable.ic_favorite_enabled);
         } else {
-            favoriteMenu.setIcon(android.R.drawable.btn_minus);
+            favoriteMenu.setIcon(R.drawable.ic_favorite_disabled);
         }
     }
 }

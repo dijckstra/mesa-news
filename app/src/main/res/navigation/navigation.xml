@@ -8,9 +8,9 @@
 
     <fragment
         android:id="@+id/splash_fragment"
-        android:name="inc.mesa.mesanews.splash.SplashFragment"
+        android:name="inc.mesa.mesanews.launch.LaunchFragment"
         android:label="fragment_splash"
-        tools:layout="@layout/fragment_splash" >
+        tools:layout="@layout/fragment_launch" >
         <action
             android:id="@+id/action_display_log_in"
             app:destination="@id/log_in_fragment" />
@@ -40,35 +40,33 @@
 
     <action
         android:id="@+id/action_display_article"
-        app:destination="@id/article_fragment"/>
+        app:destination="@id/article_fragment" />
 
     <fragment
         android:id="@+id/news_fragment"
         android:name="inc.mesa.mesanews.news.NewsFragment"
-        android:label="fragment_news"
+        android:label="News Feed"
         tools:layout="@layout/fragment_news">
         <action
-            android:id="@+id/action_display_splash"
+            android:id="@+id/action_display_launcher"
             app:destination="@id/splash_fragment"/>
-
-        <action
-            android:id="@+id/open_article"
-            app:destination="@id/article_fragment" />
     </fragment>
 
     <fragment
         android:id="@+id/article_fragment"
         android:name="inc.mesa.mesanews.article.ArticleFragment"
-        android:label="fragment_article"
         tools:layout="@layout/fragment_article">
         <argument
             android:name="newsId"
+            app:argType="string" />
+        <argument
+            android:name="newsTitle"
             app:argType="string" />
     </fragment>
 
     <fragment
         android:id="@+id/filter_fragment"
         android:name="inc.mesa.mesanews.filter.FilterFragment"
-        android:label="fragment_filter"
+        android:label="Filter News"
         tools:layout="@layout/fragment_filter" />
 </navigation>

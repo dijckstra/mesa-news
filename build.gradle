@@ -11,6 +11,7 @@ buildscript {
         picassoVersion = "2.71828"
 
         guavaVersion = "28.2"
+        materialVersion = "1.1.0"
 
         stethoVersion = "1.5.1"
         facebookSdkVersion = "6.3.0"
