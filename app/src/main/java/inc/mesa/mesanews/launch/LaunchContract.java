@@ -1,6 +1,6 @@
-package inc.mesa.mesanews.splash;
+package inc.mesa.mesanews.launch;
 
-public interface SplashContract {
+public interface LaunchContract {
 
     interface View {
         void showLogInScreen();

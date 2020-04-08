@@ -1,4 +1,4 @@
-package inc.mesa.mesanews.splash;
+package inc.mesa.mesanews.launch;
 
 
 import android.os.Bundle;
@@ -15,7 +15,7 @@ import android.widget.Button;
 import androidx.navigation.Navigation;
 import inc.mesa.mesanews.R;
 
-public class SplashFragment extends Fragment implements SplashContract.View, View.OnClickListener {
+public class LaunchFragment extends Fragment implements LaunchContract.View, View.OnClickListener {
 
     private Button logInButton;
     private Button signUpButton;
@@ -23,10 +23,15 @@ public class SplashFragment extends Fragment implements SplashContract.View, Vie
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Hide the status/app bar
+        View decorView = getActivity().getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_splash, container, false);
+        View root = inflater.inflate(R.layout.fragment_launch, container, false);
 
         logInButton = root.findViewById(R.id.bt_log_in);
         logInButton.setOnClickListener(this);
