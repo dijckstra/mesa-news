@@ -24,7 +24,7 @@ public interface FilterContract {
     interface View {
         void showNews(final List<News> news);
 
-        void showArticle(final String newsId);
+        void showArticle(final News news);
     }
 
     interface Presenter {

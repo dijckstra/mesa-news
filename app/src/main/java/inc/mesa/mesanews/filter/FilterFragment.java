@@ -54,13 +54,13 @@ public class FilterFragment extends Fragment implements FilterContract.View, Ada
 
         NewsItemListener newsItemListener = new NewsItemListener() {
             @Override
-            public void onNewsClick(final String newsId) {
-                showArticle(newsId);
+            public void onNewsClick(final News news) {
+                showArticle(news);
             }
 
             @Override
-            public void onNewsFavoriteClick(final String newsId) {
-                presenter.toggleFavorite(newsId);
+            public void onNewsFavoriteClick(final News news) {
+                presenter.toggleFavorite(news.getId());
                 presenter.loadNews();
             }
         };
@@ -108,8 +108,8 @@ public class FilterFragment extends Fragment implements FilterContract.View, Ada
     }
 
     @Override
-    public void showArticle(final String newsId) {
-        MainNavDirections.ActionDisplayArticle action = MainNavDirections.actionDisplayArticle(newsId);
+    public void showArticle(final News news) {
+        MainNavDirections.ActionDisplayArticle action = MainNavDirections.actionDisplayArticle(news.getId(), news.getTitle());
         Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
     }
 
