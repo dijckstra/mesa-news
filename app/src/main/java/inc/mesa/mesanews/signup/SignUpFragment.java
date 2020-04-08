@@ -2,6 +2,7 @@ package inc.mesa.mesanews.signup;
 
 
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,10 @@ public class SignUpFragment extends Fragment implements SignUpContract.View, Vie
     public View onCreateView(final LayoutInflater inflater,
                              final ViewGroup container,
                              final Bundle savedInstanceState) {
+        View decorView = getActivity().getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
+        decorView.setSystemUiVisibility(uiOptions);
+
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
